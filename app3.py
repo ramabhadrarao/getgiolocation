@@ -15,6 +15,7 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS giopositions (id INT AUTO_INCREMENT
 
 # Streamlit app
 st.title("Get Location Coordinates")
+geolocator = Nominatim(user_agent="my_geo_app")
 
 # Function to get coordinates
 def get_coordinates():
