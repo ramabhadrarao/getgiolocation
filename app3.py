@@ -18,11 +18,13 @@ st.title("Get Location Coordinates")
 
 # Function to get coordinates
 def get_coordinates():
-    # g = geocoder.ip('me')
-    # return g.lat, g.lng
-    geolocator = Nominatim(user_agent="geoapiExercises")
-    location = geolocator.geocode("me", timeout=10)
-    return location.latitude, location.longitude
+    try:
+        location = geolocator.geocode("me", timeout=10)
+        return location.latitude, location.longitude
+    except Exception as e:
+        st.error(f"Error occurred: {e}")
+        return None, None
+
 
 # Button to trigger location retrieval
 button_clicked = st.button("Get Location")
