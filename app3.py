@@ -71,7 +71,7 @@ mycursor.execute("SELECT latitude, longitude FROM giopositions")
 for record in mycursor.fetchall():
     coordinates.append((float(record[0]), float(record[1])))
 
-st.write(coordinates)
+#st.write(coordinates)
 # Calculate distances and create network diagram
 G = nx.Graph()
 for i, (lat1, lon1) in enumerate(coordinates):
