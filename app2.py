@@ -45,9 +45,9 @@ for i, (lat1, lon1) in enumerate(coordinates):
             G.add_edge(i, j, weight=distance)
 
 # Draw network diagram
+fig, ax = plt.subplots()
 pos = nx.get_node_attributes(G, 'pos')
-nx.draw(G, pos, with_labels=True)
+nx.draw(G, pos, with_labels=True, ax=ax)
 labels = nx.get_edge_attributes(G, 'weight')
-nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
-st.pyplot()
-
+nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, ax=ax)
+st.pyplot(fig)
