@@ -19,12 +19,23 @@ geolocator = Nominatim(user_agent="my_geo_app")
 
 # Function to get coordinates
 def get_coordinates():
-    try:
-        location = geolocator.geocode("me", timeout=10)
-        return location.latitude, location.longitude
-    except Exception as e:
-        st.error(f"Error occurred: {e}")
-        return None, None
+    if st.button("Get Location"):
+        latitude = st.session_state['latitude']
+        longitude = st.session_state['longitude']
+        st.write(f"Latitude: {latitude}")
+        st.write(f"Longitude: {longitude}")
+    else:
+        st.write("Click the 'Get Location' button to retrieve coordinates.")
+
+# Trigger button to get location
+get_coordinates()
+
+# Add these lines to your Streamlit script
+if 'latitude' not in st.session_state:
+    st.session_state['latitude'] = None
+
+if 'longitude' not in st.session_state:
+    st.session_state['longitude'] = None
 
 # Function to calculate haversine distance
 def haversine(lat1, lon1, lat2, lon2):
@@ -52,17 +63,14 @@ def haversine(lat1, lon1, lat2, lon2):
 button_clicked = st.button("Get Location")
 
 if button_clicked:
-    latitude, longitude = get_coordinates()
-    st.write(f"Latitude: {latitude}")
-    st.write(f"Longitude: {longitude}")
-
-    # Store the coordinates in the MySQL table
-    sql = "INSERT INTO giopositions (latitude, longitude) VALUES (%s, %s)"
-    val = (latitude, longitude)
-    mycursor.execute(sql, val)
-    mydb.commit()
-    st.write("Coordinates saved to MySQL database")
-
+    location = geolocator.geocode("me", timeout=10)
+    if location:
+        st.session_state['latitude'] = location.latitude
+        st.session_state['longitude'] = location.longitude
+        st.write(f"Latitude: {location.latitude}")
+        st.write(f"Longitude: {location.longitude}")
+    else:
+        st.error("Error occurred while fetching coordinates. Please try again.")
 
 # Read coordinates from MySQL
 coordinates = []
@@ -71,7 +79,6 @@ mycursor.execute("SELECT latitude, longitude FROM giopositions")
 for record in mycursor.fetchall():
     coordinates.append((float(record[0]), float(record[1])))
 
-#st.write(coordinates)
 # Calculate distances and create network diagram
 G = nx.Graph()
 for i, (lat1, lon1) in enumerate(coordinates):
