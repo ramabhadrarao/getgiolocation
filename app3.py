@@ -32,13 +32,14 @@ if 'longitude' not in st.session_state:
     st.session_state['longitude'] = None
 
 if st.button("Get Location", key=datetime.now()):
-    geolocator = Nominatim(user_agent="my_geo_app")  # Define geolocator here
     location = geolocator.geocode("me", timeout=10)
+    st.write(location)
     if location:
         st.session_state['latitude'] = location.latitude
         st.session_state['longitude'] = location.longitude
     else:
         st.error("Error occurred while fetching coordinates. Please try again.")
+
 
 get_coordinates()
 
