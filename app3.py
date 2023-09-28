@@ -60,9 +60,9 @@ def haversine(lat1, lon1, lat2, lon2):
     return distance
 
 # Button to trigger location retrieval
-button_clicked = st.button("Get Location")
+#button_clicked = st.button("Get Location")
 
-if button_clicked:
+if st.button("Get Location", key=datetime.now()):
     location = geolocator.geocode("me", timeout=10)
     if location:
         st.session_state['latitude'] = location.latitude
