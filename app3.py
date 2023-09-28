@@ -16,10 +16,9 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS giopositions (id INT AUTO_INCREMENT
 
 # Streamlit app
 st.title("Get Location Coordinates")
-geolocator = Nominatim(user_agent="my_geo_app")
-
 # Function to get coordinates
 def get_coordinates():
+    geolocator = Nominatim(user_agent="my_geo_app")  # Define geolocator here
     latitude = st.session_state['latitude']
     longitude = st.session_state['longitude']
     st.write(f"Latitude: {latitude}")
@@ -33,6 +32,7 @@ if 'longitude' not in st.session_state:
     st.session_state['longitude'] = None
 
 if st.button("Get Location", key=datetime.now()):
+    geolocator = Nominatim(user_agent="my_geo_app")  # Define geolocator here
     location = geolocator.geocode("me", timeout=10)
     if location:
         st.session_state['latitude'] = location.latitude
@@ -41,6 +41,7 @@ if st.button("Get Location", key=datetime.now()):
         st.error("Error occurred while fetching coordinates. Please try again.")
 
 get_coordinates()
+
 
 # Read coordinates from MySQL
 coordinates = []
