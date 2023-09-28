@@ -2,3 +2,4 @@ geocoder
 streamlit
 networkx
 matplotlib
+mysql-connector-python
