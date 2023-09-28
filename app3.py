@@ -63,12 +63,14 @@ if button_clicked:
     mydb.commit()
     st.write("Coordinates saved to MySQL database")
 
+
 # Read coordinates from MySQL
 coordinates = []
 mycursor.execute("SELECT latitude, longitude FROM giopositions")
 
 for record in mycursor.fetchall():
-    coordinates.append((float(record[1]), float(record[2])))
+    coordinates.append((float(record[0]), float(record[1])))
+
 st.write(coordinates)
 # Calculate distances and create network diagram
 G = nx.Graph()
