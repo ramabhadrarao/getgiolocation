@@ -67,7 +67,7 @@ if button_clicked:
 coordinates = []
 for record in mycursor.fetchall():
     coordinates.append((float(record[1]), float(record[2])))
-
+st.write(coordinates)
 # Calculate distances and create network diagram
 G = nx.Graph()
 for i, (lat1, lon1) in enumerate(coordinates):
