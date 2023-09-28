@@ -3,3 +3,4 @@ streamlit
 networkx
 matplotlib
 mysql-connector-python
+geopy
