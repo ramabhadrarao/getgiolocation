@@ -4,6 +4,7 @@ import math
 import networkx as nx
 import matplotlib.pyplot as plt
 import mysql.connector
+from geopy.geocoders import Nominatim
 
 # Connect to MySQL
 mydb = mysql.connector.connect(**st.secrets["mysql"])
@@ -17,8 +18,11 @@ st.title("Get Location Coordinates")
 
 # Function to get coordinates
 def get_coordinates():
-    g = geocoder.ip('me')
-    return g.lat, g.lng
+    # g = geocoder.ip('me')
+    # return g.lat, g.lng
+    geolocator = Nominatim(user_agent="geoapiExercises")
+    location = geolocator.geocode("me", timeout=10)
+    return location.latitude, location.longitude
 
 # Button to trigger location retrieval
 button_clicked = st.button("Get Location")
