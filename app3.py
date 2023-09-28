@@ -10,6 +10,7 @@ mydb = mysql.connector.connect(**st.secrets["mysql"])
 
 # Create a cursor object
 mycursor = mydb.cursor()
+mycursor.execute("CREATE TABLE IF NOT EXISTS giopositions (id INT AUTO_INCREMENT PRIMARY KEY, latitude DECIMAL(9,6), longitude DECIMAL(9,6))")
 
 # Streamlit app
 st.title("Get Location Coordinates")
