@@ -65,6 +65,8 @@ if button_clicked:
 
 # Read coordinates from MySQL
 coordinates = []
+mycursor.execute("SELECT latitude, longitude FROM giopositions")
+
 for record in mycursor.fetchall():
     coordinates.append((float(record[1]), float(record[2])))
 st.write(coordinates)
