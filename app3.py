@@ -36,8 +36,9 @@ if button_clicked:
     st.write("Coordinates saved to MySQL database")
 
 # Read coordinates from MySQL
-mycursor.execute("SELECT * FROM giopositions")
-coordinates = mycursor.fetchall()
+coordinates = []
+for record in mycursor.fetchall():
+    coordinates.append((float(record[1]), float(record[2])))
 
 # Calculate distances and create network diagram
 G = nx.Graph()
@@ -47,7 +48,6 @@ for i, (lat1, lon1) in enumerate(coordinates):
         if i != j:
             distance = math.dist((lat1, lon1), (lat2, lon2))
             G.add_edge(i, j, weight=distance)
-
 # Draw network diagram
 fig, ax = plt.subplots()
 pos = nx.get_node_attributes(G, 'pos')
