@@ -1,36 +1,18 @@
 import streamlit as st
+import geocoder
 
 # Streamlit app
 st.title("Get Location Coordinates")
 
-# Add a button that will trigger the geolocation feature
+# Function to get coordinates
+def get_coordinates():
+    g = geocoder.ip('me')
+    return g.lat, g.lng
+
+# Button to trigger location retrieval
 button_clicked = st.button("Get Location")
 
-# Add a placeholder for the result
-result = st.empty()
-
 if button_clicked:
-    # Use JavaScript to get the user's location
-    js_code = """
-    <script>
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    }
-
-    function showPosition(position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        var result = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-        document.getElementById("result").innerHTML = result;
-    }
-    </script>
-    <button onclick="getLocation()">Get Location</button>
-    <div id="result"></div>
-    """
-
-    # Display the HTML and JavaScript code
-    result.markdown(js_code, unsafe_allow_html=True)
+    latitude, longitude = get_coordinates()
+    st.write(f"Latitude: {latitude}")
+    st.write(f"Longitude: {longitude}")
