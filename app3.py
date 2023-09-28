@@ -5,7 +5,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import mysql.connector
 from geopy.geocoders import Nominatim
-
+from datetime import datetime
 
 # Connect to MySQL
 mydb = mysql.connector.connect(**st.secrets["mysql"])
@@ -20,58 +20,27 @@ geolocator = Nominatim(user_agent="my_geo_app")
 
 # Function to get coordinates
 def get_coordinates():
-    if st.button("Get Location"):
-        latitude = st.session_state['latitude']
-        longitude = st.session_state['longitude']
-        st.write(f"Latitude: {latitude}")
-        st.write(f"Longitude: {longitude}")
-    else:
-        st.write("Click the 'Get Location' button to retrieve coordinates.")
+    latitude = st.session_state['latitude']
+    longitude = st.session_state['longitude']
+    st.write(f"Latitude: {latitude}")
+    st.write(f"Longitude: {longitude}")
 
 # Trigger button to get location
-get_coordinates()
-
-# Add these lines to your Streamlit script
 if 'latitude' not in st.session_state:
     st.session_state['latitude'] = None
 
 if 'longitude' not in st.session_state:
     st.session_state['longitude'] = None
 
-# Function to calculate haversine distance
-def haversine(lat1, lon1, lat2, lon2):
-    # Convert latitude and longitude from degrees to radians
-    lat1 = math.radians(lat1)
-    lon1 = math.radians(lon1)
-    lat2 = math.radians(lat2)
-    lon2 = math.radians(lon2)
-
-    # Haversine formula
-    dlat = lat2 - lat1
-    dlon = lon2 - lon1
-    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-
-    # Radius of the Earth in kilometers
-    R = 6371.0
-
-    # Calculate the distance
-    distance = R * c
-
-    return distance
-
-# Button to trigger location retrieval
-#button_clicked = st.button("Get Location")
-
 if st.button("Get Location", key=datetime.now()):
     location = geolocator.geocode("me", timeout=10)
     if location:
         st.session_state['latitude'] = location.latitude
         st.session_state['longitude'] = location.longitude
-        st.write(f"Latitude: {location.latitude}")
-        st.write(f"Longitude: {location.longitude}")
     else:
         st.error("Error occurred while fetching coordinates. Please try again.")
+
+get_coordinates()
 
 # Read coordinates from MySQL
 coordinates = []
